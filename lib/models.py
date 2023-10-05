@@ -47,7 +47,7 @@ class Client(Base):
 class Feedback(Base):
     __tablename__ = "feedbacks"
 
-    id = Column(Integer(), primary_key=True)  # Set autoincrement="auto"
+    id = Column(Integer(), primary_key=True)
 
     star_ratings = Column(Integer())
     car_name = Column(String(), ForeignKey('cars.name'))
@@ -84,8 +84,7 @@ def list_cars_used_by_customer(customer_id):
 
 # Method 6: List average restaurant review per user
 def list_average_review_per_user():
-    # Use SQLAlchemy's func.avg to calculate average ratings per user
-    # Group by client_id and calculate the average star_ratings
+
     return (
         session.query(Feedback.client_id, func.avg(Feedback.star_ratings).label('average_rating'))
         .group_by(Feedback.client_id)
@@ -96,14 +95,14 @@ def add_car(name, price):
     car = Car(name=name, price=price)
     session.add(car)
     session.commit()
-    return car  # Return the added car object
+    return car
 
 # method 8: Add a client
 def add_client(first_name, last_name):
     client = Client(first_name=first_name, last_name=last_name)
     session.add(client)
     session.commit()
-    return client  # Return the added client object
+    return client 
 
 # method 9: Delete a car
 def delete_car_by_id(car_id):
@@ -111,10 +110,10 @@ def delete_car_by_id(car_id):
     if car:
         session.delete(car)
         session.commit()
-        return True  # Car deleted successfully
+        return True
     else:
         print("Car not deleted successfully")
-        return False  # Car with the given ID not found
+        return False
 
 # method 9a: car exists
 
@@ -130,26 +129,26 @@ def delete_client_by_id(client_id):
     if client:
         session.delete(client)
         session.commit()
-        return True  # Client deleted successfully
+        return True
     else:
-        return False  # Client with the given ID not found
+        return False 
     
 # method 10a: client exists
 
 def client_exists(client_id):
-    # Query the database to check if a client with the given ID exists
+
     return session.query(Client).filter(Client.id == client_id).count() > 0
 
 # Method 11: Add feedback
 def add_feedback(star_ratings, car_id, client_id):
     feedback = Feedback(
         star_ratings=star_ratings,
-        car_id=car_id,  # Use car_id to associate feedback with a car
-        client_id=client_id,  # Use client_id to associate feedback with a client
+        car_id=car_id,
+        client_id=client_id,
     )
 
     session.add(feedback)
     session.commit()
-    return feedback  # Return the added feedback object
+    return feedback
 
 
