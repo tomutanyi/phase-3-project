@@ -42,6 +42,7 @@ class Client(Base):
         return f"Client's first name: {self.first_name}, last name: {self.last_name}"
 
 
+
 class Feedback(Base):
     __tablename__ = "feedbacks"
 
@@ -53,4 +54,21 @@ class Feedback(Base):
     client_id = Column(Integer(), ForeignKey('clients.id'))
 
     client = relationship("Client", back_populates="feedbacks")
-    car = relationship("Car", back_populates="feedbacks", foreign_keys=[car_name])  # Add foreign_keys parameter
+    car = relationship("Car", back_populates="feedbacks", foreign_keys=[car_name])
+
+# list all clients
+def list_all_clients():
+    return session.query(Client).all()
+
+# Method 2: List all cars
+def list_all_cars():
+    return session.query(Car).all()
+
+# Method 3: List all reviews
+def list_all_reviews():
+    return session.query(Feedback).all()
+
+# Method 4: List all reviews per customer
+def list_reviews_by_customer(customer_id):
+    return session.query(Feedback).filter(Feedback.client_id == customer_id).all()
+
