@@ -66,11 +66,11 @@ if __name__ == '__main__':
     feedbacks = []
     for client in clients:
         for _ in range(random.randint(1, 2)):
-            car = random.choice(cars)
+            car_name = random.choice(car_names)  # Select a random car name
 
             feedback = Feedback(
                 star_ratings=random.randint(1, 5),
-                car_id=car.id,
+                car_name=car_name,  # Use car name instead of car ID
                 client_id=client.id,
             )
 

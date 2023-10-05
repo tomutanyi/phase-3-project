@@ -48,8 +48,9 @@ class Feedback(Base):
     id = Column(Integer(), primary_key=True)
     star_ratings = Column(Integer())
 
-    car_id = Column(Integer(), ForeignKey('cars.id'))
+    car_name = Column(String(), ForeignKey('cars.name'))  # Change to car_name
+
     client_id = Column(Integer(), ForeignKey('clients.id'))
 
     client = relationship("Client", back_populates="feedbacks")
-    car = relationship("Car", back_populates="feedbacks")
+    car = relationship("Car", back_populates="feedbacks", foreign_keys=[car_name])  # Add foreign_keys parameter
