@@ -47,8 +47,9 @@ class Feedback(Base):
 
     id = Column(Integer(), primary_key=True)
     star_ratings = Column(Integer())
-    comment = Column(String(length=40))  # Limit feedback to a maximum of 40 characters
 
     car_id = Column(Integer(), ForeignKey('cars.id'))
     client_id = Column(Integer(), ForeignKey('clients.id'))
 
+    client = relationship("Client", back_populates="feedbacks")
+    car = relationship("Car", back_populates="feedbacks")
