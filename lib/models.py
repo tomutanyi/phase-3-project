@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import func
 
 Base = declarative_base()
 engine = create_engine('sqlite:///lightning.db')
@@ -46,15 +47,15 @@ class Client(Base):
 class Feedback(Base):
     __tablename__ = "feedbacks"
 
-    id = Column(Integer(), primary_key=True)
+    id = Column(Integer(), primary_key=True)  # Set autoincrement="auto"
+
     star_ratings = Column(Integer())
-
-    car_name = Column(String(), ForeignKey('cars.name'))  # Change to car_name
-
+    car_name = Column(String(), ForeignKey('cars.name'))
     client_id = Column(Integer(), ForeignKey('clients.id'))
 
     client = relationship("Client", back_populates="feedbacks")
     car = relationship("Car", back_populates="feedbacks", foreign_keys=[car_name])
+
 
 # list all clients
 def list_all_clients():
@@ -71,4 +72,84 @@ def list_all_reviews():
 # Method 4: List all reviews per customer
 def list_reviews_by_customer(customer_id):
     return session.query(Feedback).filter(Feedback.client_id == customer_id).all()
+
+# Method 5: List all cars used by a customer
+def list_cars_used_by_customer(customer_id):
+    customer = session.query(Client).get(customer_id)
+    if customer:
+        return customer.cars
+    else:
+        return []
+
+
+# Method 6: List average restaurant review per user
+def list_average_review_per_user():
+    # Use SQLAlchemy's func.avg to calculate average ratings per user
+    # Group by client_id and calculate the average star_ratings
+    return (
+        session.query(Feedback.client_id, func.avg(Feedback.star_ratings).label('average_rating'))
+        .group_by(Feedback.client_id)
+        .all()
+    )
+# method 7: Add a car
+def add_car(name, price):
+    car = Car(name=name, price=price)
+    session.add(car)
+    session.commit()
+    return car  # Return the added car object
+
+# method 8: Add a client
+def add_client(first_name, last_name):
+    client = Client(first_name=first_name, last_name=last_name)
+    session.add(client)
+    session.commit()
+    return client  # Return the added client object
+
+# method 9: Delete a car
+def delete_car_by_id(car_id):
+    car = session.query(Car).filter_by(id=car_id).first()
+    if car:
+        session.delete(car)
+        session.commit()
+        return True  # Car deleted successfully
+    else:
+        print("Car not deleted successfully")
+        return False  # Car with the given ID not found
+
+# method 9a: car exists
+
+def car_exists(car_id):
+    # Query the database to check if a car with the given ID exists
+    return session.query(Car).filter(Car.id == car_id).count() > 0
+
+# method 10a
+
+# method 10: delete a client from the database
+def delete_client_by_id(client_id):
+    client = session.query(Client).filter_by(id=client_id).first()
+    if client:
+        session.delete(client)
+        session.commit()
+        return True  # Client deleted successfully
+    else:
+        return False  # Client with the given ID not found
+    
+# method 10a: client exists
+
+def client_exists(client_id):
+    # Query the database to check if a client with the given ID exists
+    return session.query(Client).filter(Client.id == client_id).count() > 0
+
+# Method 11: Add feedback
+def add_feedback(star_ratings, car_id, client_id):
+    feedback = Feedback(
+        star_ratings=star_ratings,
+        car_id=car_id,  # Use car_id to associate feedback with a car
+        client_id=client_id,  # Use client_id to associate feedback with a client
+    )
+
+    session.add(feedback)
+    session.commit()
+    return feedback  # Return the added feedback object
+
 
