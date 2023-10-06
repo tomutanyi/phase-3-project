@@ -1,19 +1,35 @@
+#!/usr/bin/env python3
+
 import models
+from rich import print
+from rich.console import Console
 
+# Validate menu entries to be numeric
+def inputNumber(message):
+    while True:
+        try:
+            userInput = int(input(message))
+        except ValueError:
+            print("\n\n[red]Please enter an integer![/red]\n\n")
+            continue
+        else:
+            return userInput
+            break 
+        
 def feedback_menu():
-    feedback_menu_prompt = '''
-Please enter an option below to navigate through our feedback entries.
 
-0. Main Menu
-1. List all feedback entries
-2. List average feedback score by client
-3. List all feedback of a client by id
-4. Go back one level
-5. Exit
-'''
-    print (feedback_menu_prompt)
-    option = int(input("Enter an option: "))
+    print("Please enter an option below to navigate through our feedback entries database.\n\n")
 
+    print("0. Main Menu")
+    print("1. List all feedback entries")
+    print("2. List average feedback score by client")
+    print("3. List all feedback of a client by id")
+    print("4. Go back one level")
+    print("5. Exit\n\n")
+    
+    option = inputNumber("Please enter a number from the menu: ") #validate entry
+    
+      
     if option == 1:
         reviews = models.list_all_reviews()
         for review in reviews:
@@ -37,7 +53,7 @@ Please enter an option below to navigate through our feedback entries.
             feedback_menu()
 
         if not customer_reviews:
-            print(f"No reviews found for customer with ID {customer_id}.")
+            print(f"No reviews found for customer with ID: {customer_id}.")
             feedback_menu()
         else:
             for review in customer_reviews:
@@ -55,21 +71,17 @@ Please enter an option below to navigate through our feedback entries.
 
     
 def cars_menu():
-    cars_menu_prompt = '''
-Please enter an option below to navigate through the our cars.
 
-0. Main Menu
-1. List all cars
-2. Add a car
-3. Delete a car
-4. Go back one level
-5. Exit
-'''
+    print("Please enter an option below to navigate through the cars database.\n\n")
 
+    print("0. Main Menu")
+    print("1. List all cars")
+    print("2. Add a car")
+    print("3. Delete a car")
+    print("4. Go back one level")
+    print("5. Exit\n\n")
 
-    print(cars_menu_prompt)
-
-    option = int(input("Enter an option: "))
+    option = inputNumber("Enter an option: ")
 
     if option == 1:
         cars = models.list_all_cars()
@@ -80,7 +92,7 @@ Please enter an option below to navigate through the our cars.
 
     elif option == 2:
         car_name = input("Please enter a car name: ")
-        car_price = int(input("Please enter a car price: "))
+        car_price = inputNumber("Please enter a car price: ")
         new_car = models.add_car(car_name, car_price)
         print(f"Added Car ID: {new_car.id}, Name: {new_car.name}, Price: {new_car.price}")
         cars_menu()
@@ -128,20 +140,17 @@ def delete_a_client():
         delete_a_client()
 
 def clients_menu():
-    clients_menu_prompt = '''
-Please enter an option below to navigate through the our clients.
 
-0. Main Menu
-1. List all clients
-2. Add a client
-3. Delete a client
-4. Go back one level
-5. Exit
-'''
+    print("Please enter an option below to navigate through the clients database.\n\n")
 
-    print(clients_menu_prompt)
+    print("0. Main Menu")
+    print("1. List all clients")
+    print("2. Add a client")
+    print("3. Delete a client")
+    print("4. Go back one level")
+    print("5. Exit\n\n")
 
-    option = int(input("Enter an option: "))
+    option = inputNumber("Enter an option: ")
 
     if option == 1:
         customers = models.list_all_clients()
@@ -171,21 +180,18 @@ Please enter an option below to navigate through the our clients.
         clients_menu()
         
 def main_menu():
-    main_menu_prompt = """
-Welcome to lightning rental service!
 
-Please enter an option below to navigate through the our database.
+    print("Welcome to the Main Menu of Lightning Car Rental Service!\n\n\n")
 
+    print("Please enter an option below to navigate through the our database.\n\n\n")
 
-1. Clients
-2. Cars
-3. Feedback
-4. Exit
+    print("1. Clients")
+    print("2. Cars")
+    print("3. Feedback")
+    print("4. Exit\n\n\n")
 
-"""
-    print(main_menu_prompt)
-
-    option = int(input("Enter an option: "))
+    option = inputNumber("Enter an option: ")
+    
     if option == 1:
         clients_menu()
     elif option == 2:
@@ -195,13 +201,7 @@ Please enter an option below to navigate through the our database.
     elif option == 4:
         exit()
     else:
-        print("Invalid option. Please enter a valid option")
+        print("Invalid option. Please enter a valid option\n\n")
         main_menu()
         
 main_menu()
-
-
-
-
-
-
