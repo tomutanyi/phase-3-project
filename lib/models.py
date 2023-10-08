@@ -151,4 +151,13 @@ def add_feedback(star_ratings, car_id, client_id):
     session.commit()
     return feedback
 
+# Method 12: Search for cars by name (case-insensitive)
+def search_cars_by_name(name):
+    return session.query(Car).filter(Car.name.ilike(f"%{name}%")).all()
+
+# Method 13: Search for clients by name (case-insensitive)
+def search_clients_by_name(name):
+    return session.query(Client).filter(Client.first_name.ilike(f"%{name}%") | Client.last_name.ilike(f"%{name}%")).all()
+
+
 

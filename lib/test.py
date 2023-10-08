@@ -89,13 +89,35 @@ import models
 
 # delete_a_client()
 
-# Test method 11: Add feedback
-star_ratings = int(input("Enter star ratings (1-5): "))
-car_id = int(input("Enter car ID: "))
-client_id = int(input("Enter client ID: "))
+# # Test method 11: Add feedback
+# star_ratings = int(input("Enter star ratings (1-5): "))
+# car_id = int(input("Enter car ID: "))
+# client_id = int(input("Enter client ID: "))
 
-feedback = models.add_feedback(star_ratings, car_id, client_id)
-print(f"Feedback ID {feedback.id} added successfully.")
+# feedback = models.add_feedback(star_ratings, car_id, client_id)
+# print(f"Feedback ID {feedback.id} added successfully.")
+
+# method 12: Searching for cars by name or part of a name
+# car_name = input("Enter car name to search for: ")
+# found_cars = models.search_cars_by_name(car_name)
+# if found_cars:
+#     for car in found_cars:
+#         print(f"Car name: {car.name}, Price: ${car.price}")
+# else:
+#     print("No cars found with the given name.")
+
+# method 12: Searching for clients by name
+client_name = input("Enter a client name to search: ")
+found_clients = models.search_clients_by_name(client_name)
+if found_clients:
+    for client in found_clients:
+        print(f"Client ID: {client.id}, First Name: {client.first_name}, Last Name: {client.last_name}")
+else:
+    print("No clients found with the given name.")
+
+
+
+
 
 
 

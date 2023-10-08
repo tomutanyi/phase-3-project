@@ -16,18 +16,20 @@ def inputNumber(message):
             return userInput
             break 
         
+
+        
 def feedback_menu():
 
     print("Please enter an option below to navigate through our feedback entries database.\n\n")
 
-    print("0. Main Menu")
+    print("0. [blue]Main Menu[/blue]")
     print("1. List all feedback entries")
-    print("2. List average feedback score by client")
+    print("2. List average feedback score by all clients")
     print("3. List all feedback of a client by id")
     print("4. Go back one level")
-    print("5. Exit\n\n")
+    print("5. [red]Exit\n\n[/red]")1
     
-    option = inputNumber("Please enter a number from the menu: ") #validate entry
+    option = inputNumber("Enter an option: ") #validate entry
     
       
     if option == 1:
@@ -74,12 +76,13 @@ def cars_menu():
 
     print("Please enter an option below to navigate through the cars database.\n\n")
 
-    print("0. Main Menu")
+    print("0. [blue]Main Menu[/blue]")
     print("1. List all cars")
     print("2. Add a car")
-    print("3. Delete a car")
-    print("4. Go back one level")
-    print("5. Exit\n\n")
+    print("3. Search for car by name")
+    print("4. Delete a car")
+    print("5. Go back one level")
+    print("6. [red]Exit\n\n[/red]")
 
     option = inputNumber("Enter an option: ")
 
@@ -98,10 +101,20 @@ def cars_menu():
         cars_menu()
  
     elif option == 3:
-        delete_a_car()
+        car_name = input("Enter car name to search for: ")
+        found_cars = models.search_cars_by_name(car_name)
+        if found_cars:
+            for car in found_cars:
+                print(f"Car name: {car.name}, Price: ${car.price}")
+            cars_menu()
+        else:
+            print("No cars found with the given name.")
+            cars_menu()
     elif option == 4:
-        main_menu()
+        delete_a_car()
     elif option == 5:
+        main_menu()
+    elif option == 6:
         exit()
     elif option == 0:
         main_menu()
@@ -143,12 +156,13 @@ def clients_menu():
 
     print("Please enter an option below to navigate through the clients database.\n\n")
 
-    print("0. Main Menu")
+    print("0. [blue]Main Menu[/blue]")
     print("1. List all clients")
     print("2. Add a client")
-    print("3. Delete a client")
-    print("4. Go back one level")
-    print("5. Exit\n\n")
+    print("3. Search for a client by name")
+    print("4. Delete a client")
+    print("5. Go back one level")
+    print("6. [red]Exit\n\n[/red]")
 
     option = inputNumber("Enter an option: ")
 
@@ -165,12 +179,22 @@ def clients_menu():
         clients_menu()
 
     elif option == 3:
+        client_name = input("Enter a client name to search: ")
+        found_clients = models.search_clients_by_name(client_name)
+        if found_clients:
+            for client in found_clients:
+                print(f"Client ID: {client.id}, First Name: {client.first_name}, Last Name: {client.last_name}")
+            clients_menu()
+        else:
+            print("No clients found with the given name.")
+            clients_menu()
+    elif option == 4:
         delete_a_client()
            
-    elif option == 4:
+    elif option == 5:
         main_menu()
 
-    elif option == 5:
+    elif option == 6:
         exit()
     elif option == 0:
         main_menu()
@@ -188,7 +212,7 @@ def main_menu():
     print("1. Clients")
     print("2. Cars")
     print("3. Feedback")
-    print("4. Exit\n\n\n")
+    print("4. [red]Exit\n\n[/red]")
 
     option = inputNumber("Enter an option: ")
     
@@ -205,3 +229,5 @@ def main_menu():
         main_menu()
         
 main_menu()
+
+
